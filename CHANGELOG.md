@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.1.0]
+- Updated detection rules from upstream on 2019-04-05
+- Fixed concurrency issue in MemoryCache
+
 ## [1.0.1]
 - Updated detection rules from upstream on 2018-04-27
 
