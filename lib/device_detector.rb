@@ -47,10 +47,26 @@ class DeviceDetector
   def device_type
     t = device.type
 
+
+    # Chrome on Android passes the device type based on the keyword 'Mobile'
+    # If it is present the device should be a smartphone, otherwise it's a tablet
+    # See https://developer.chrome.com/multidevice/user-agent#chrome_for_android_user_agent
+    if t.nil? && os.family == 'Android' && ['Chrome', 'Chrome Mobile'].include?(client.name)
+      if user_agent =~ build_regex('Chrome/[\.0-9]* Mobile')
+        t = 'smartphone'
+      elsif user_agent =~ build_regex('Chrome/[\.0-9]* (?!Mobile)')
+        t = 'tablet'
+      end
+    end
+
+    # Some user agents simply contain the fragment 'Android; Tablet;' or 'Opera Tablet',
+    # so we assume those devices as tablets
     if t.nil? && android_tablet_fragment? || opera_tablet?
       t = 'tablet'
     end
 
+    # Some user agents simply contain the fragment 'Android; Mobile;',
+    # so we assume those devices as smartphones
     if t.nil? && android_mobile_fragment?
       t = 'smartphone'
     end
@@ -88,10 +104,12 @@ class DeviceDetector
       t = 'tablet'
     end
 
+    # All devices running Opera TV Store are assumed to be a tv
     if opera_tv_store?
       t = 'tv'
     end
 
+    # Devices running Kylo or Espital TV Browsers are assumed to be a TV
     if t.nil? && ['Kylo', 'Espial TV Browser'].include?(client.name)
       t = 'tv'
     end
