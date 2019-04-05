@@ -1,6 +1,6 @@
 # DeviceDetector
 
-![Podigee DeviceDetector Travisci Badge](https://travis-ci.org/podigee/device_detector.svg)
+![Castle DeviceDetector Travisci Badge](https://travis-ci.org/castle/device_detector.svg)
 
 DeviceDetector is a precise and fast user agent parser and device detector written in Ruby, backed by the largest and most up-to-date user agent database.
 

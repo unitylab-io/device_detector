@@ -23,19 +23,15 @@ class DeviceDetector
       data[String(key)]
     end
 
-    def key?(string_key)
-      data.key?(string_key)
-    end
-
     def get_or_set(key, value = nil)
-      string_key = String(key)
+      result = get(key)
 
-      if key?(string_key)
-        get(string_key)
-      else
-        value = yield if block_given?
-        set(string_key, value)
-      end
+      return result if result
+
+      set(
+        key,
+        block_given? ? yield : value
+      )
     end
 
     private
